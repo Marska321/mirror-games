@@ -1,11 +1,8 @@
 import WordGrid from '../components/WordGrid';
 
 async function getPuzzle() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-  const url = new URL('/api/puzzle', baseUrl);
-
   try {
-    const res = await fetch(url.toString(), { cache: 'no-store' });
+    const res = await fetch('/api/puzzle', { cache: 'no-store' });
     if (!res.ok) return null;
     return res.json();
   } catch (error) {
