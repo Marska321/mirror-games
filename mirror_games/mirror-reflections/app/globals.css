@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --tier-yellow: #f7da21;
+  --tier-green:  #b5e352;
+  --tier-red:     #e05c56;
+  --tier-blue:   #00a2b3;
+  --tier-purple: #fb9b00;
+  --tile-bg: #ffffff;
+  --tile-active: #2D334A;
+  --shadow: #000000;
+}
+
+body {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+@layer components {
+  .neo-tile {
+    background: var(--tile-bg);
+    border: 4px solid var(--shadow);
+    border-radius: 1rem;
+    box-shadow: 6px 6px 0px 0px var(--shadow);
+    transition: all 0.075s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 900;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    cursor: pointer;
+  }
+
+  .neo-tile:hover:not(:disabled) {
+    box-shadow: 8px 8px 0px 0px var(--shadow);
+    transform: translateX(-2px) translateY(-2px);
+  }
+
+  .neo-tile-selected {
+    background-color: var(--tile-active);
+    color: white !important;
+    box-shadow: none !important;
+    transform: translate(4px, 4px);
+  }
+
+  /* Success Bars */
+  .tier-0 { background-color: var(--tier-yellow); }
+  .tier-1 { background-color: var(--tier-green); }
+  .tier-2 { background-color: var(--tier-blue); color: white; }
+  .tier-3 { background-color: var(--tier-purple); color: white; }
+}
