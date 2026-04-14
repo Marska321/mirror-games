@@ -10,7 +10,10 @@ interface Category {
   words: string[];
 }
 
-export default function WordGrid({ puzzleData }: { puzzleData: Category[] }) {
+export default function WordGrid({ puzzleData }: { puzzleData: any }) {
+  // Safely extract the array whether it was passed directly or wrapped in a 'groups' object
+  const validData: Category[] | null = Array.isArray(puzzleData) ? puzzleData : (puzzleData?.groups || null);
+
   const [allWords, setAllWords] = useState<{ word: string; category: string }[]>([]);
   const [initialGrid, setInitialGrid] = useState<{ word: string; category: string }[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
@@ -20,9 +23,9 @@ export default function WordGrid({ puzzleData }: { puzzleData: Category[] }) {
   const [isShaking, setIsShaking] = useState(false);
 
   useEffect(() => {
-    if (!Array.isArray(puzzleData)) return;
+    if (!validData) return;
 
-    const flattened = puzzleData.flatMap(group =>
+    const flattened = validData.flatMap(group =>
       group.words.map(w => ({ word: w, category: group.category }))
     );
     const shuffled = flattened.sort(() => Math.random() - 0.5);
@@ -32,7 +35,7 @@ export default function WordGrid({ puzzleData }: { puzzleData: Category[] }) {
     setSolvedCategories([]);
     setMistakes(4);
     setIsGameOver(false);
-  }, [puzzleData]);
+  }, [validData]);
 
   const resetGame = () => {
     setAllWords([...initialGrid]);
@@ -79,7 +82,7 @@ export default function WordGrid({ puzzleData }: { puzzleData: Category[] }) {
     setAllWords(shuffled);
   };
 
-  if (!Array.isArray(puzzleData)) {
+  if (!validData) {
     return (
       <div className={`w-full mx-auto p-8 text-center ${sans.className}`}>
         <p className="text-red-500 font-bold">Unable to load the puzzle.</p>
@@ -102,7 +105,7 @@ export default function WordGrid({ puzzleData }: { puzzleData: Category[] }) {
           >
             <span className={`text-xl font-black tracking-tight ${slab.className}`}>{cat}</span>
             <span className="text-xs font-semibold uppercase tracking-wider">
-              {puzzleData.find(g => g.category === cat)?.words.join(', ')}
+              {validData.find(g => g.category === cat)?.words.join(', ')}
             </span>
           </div>
         ))}
