@@ -20,6 +20,8 @@ export default function WordGrid({ puzzleData }: { puzzleData: Category[] }) {
   const [isShaking, setIsShaking] = useState(false);
 
   useEffect(() => {
+    if (!Array.isArray(puzzleData)) return;
+
     const flattened = puzzleData.flatMap(group =>
       group.words.map(w => ({ word: w, category: group.category }))
     );
@@ -76,6 +78,15 @@ export default function WordGrid({ puzzleData }: { puzzleData: Category[] }) {
     const shuffled = [...allWords].sort(() => Math.random() - 0.5);
     setAllWords(shuffled);
   };
+
+  if (!Array.isArray(puzzleData)) {
+    return (
+      <div className={`w-full mx-auto p-8 text-center ${sans.className}`}>
+        <p className="text-red-500 font-bold">Unable to load the puzzle.</p>
+        <p className="text-sm mt-2 text-gray-600">Please refresh the page or check your database connection.</p>
+      </div>
+    );
+  }
 
   return (
     <div className={`w-full mx-auto px-4 pb-8 ${sans.className}`}>
